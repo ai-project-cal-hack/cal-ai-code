@@ -1,0 +1,70 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "codebreaker-control-plane",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "placement": {
+    "mode": "smart"
+  },
+  "triggers": {
+    "crons": ["*/2 * * * *"]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "class_name": "SessionAgent",
+        "name": "SESSION_AGENT"
+      },
+      {
+        "class_name": "AuditCoordinatorAgent",
+        "name": "AUDIT_COORDINATOR"
+      },
+      {
+        "class_name": "AuditInvestigatorAgent",
+        "name": "AUDIT_INVESTIGATOR"
+      },
+      {
+        "class_name": "AuditValidatorAgent",
+        "name": "AUDIT_VALIDATOR"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "new_sqlite_classes": ["SessionAgent"],
+      "tag": "v1"
+    },
+    {
+      "new_sqlite_classes": [
+        "AuditCoordinatorAgent",
+        "AuditInvestigatorAgent",
+        "AuditValidatorAgent"
+      ],
+      "tag": "v2"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "codebreaker-sessions",
+      "database_id": "95269127-d119-4e26-9686-b24313025da7"
+    }
+  ],
+  "rules": [
+    {
+      "type": "Text",
+      "globs": ["**/*.jsonl"],
+      "fallthrough": true
+    }
+  ],
+  "worker_loaders": [
+    {
+      "binding": "LOADER"
+    }
+  ]
+}

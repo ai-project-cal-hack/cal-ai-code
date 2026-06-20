@@ -1,0 +1,8 @@
+{
+  "ghsa_id": "GHSA-hvr8-466p-75rh",
+  "post_patch_commit": "4e0d9b0b9740d258ade40cce248c93777362ac1e",
+  "noisy_patch": false,
+  "curation_notes": "Pre-assigned as buffer-overflow from CWE-119, but the advisory title explicitly states 'Integer overflow in ImagingResampleHorizontal' and the patch adds integer overflow checks on multiplication operations (xsize * kmax, xsize * kmax * sizeof(float), xsize * 2 * sizeof(int)) before malloc calls. The root cause is integer overflow in size calculations leading to undersized allocations — reclassified to integer-overflow. Location derived from advisory description naming the function and confirmed by single-file patch diff. No sibling files share the same vulnerability pattern.",
+  "dataset_version": "0.1.0",
+  "snapshot_date": "2026-04-26"
+}

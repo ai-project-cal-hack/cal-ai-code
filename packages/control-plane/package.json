@@ -1,0 +1,209 @@
+{
+  "name": "@codebreaker/control-plane",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./benchmarks/dataset": {
+      "types": "./src/benchmarks/dataset.ts",
+      "default": "./src/benchmarks/dataset.ts"
+    },
+    "./benchmarks/orchestrator": {
+      "types": "./src/benchmarks/orchestrator.ts",
+      "default": "./src/benchmarks/orchestrator.ts"
+    },
+    "./cve-followup/constants": {
+      "types": "./src/cve-followup/constants.ts",
+      "default": "./src/cve-followup/constants.ts"
+    },
+    "./cve-followup/orchestrator": {
+      "types": "./src/cve-followup/orchestrator.ts",
+      "default": "./src/cve-followup/orchestrator.ts"
+    },
+    "./cve-followup/devin": {
+      "types": "./src/cve-followup/devin.ts",
+      "default": "./src/cve-followup/devin.ts"
+    },
+    "./cve-followup/enrich": {
+      "types": "./src/cve-followup/enrich.ts",
+      "default": "./src/cve-followup/enrich.ts"
+    },
+    "./cve-followup/prompts": {
+      "types": "./src/cve-followup/prompts.ts",
+      "default": "./src/cve-followup/prompts.ts"
+    },
+    "./cve-followup/triage": {
+      "types": "./src/cve-followup/triage.ts",
+      "default": "./src/cve-followup/triage.ts"
+    },
+    "./cve-followup/util": {
+      "types": "./src/cve-followup/util.ts",
+      "default": "./src/cve-followup/util.ts"
+    },
+    "./cve-followup/validation": {
+      "types": "./src/cve-followup/validation.ts",
+      "default": "./src/cve-followup/validation.ts"
+    },
+    "./cve-followup/repro-github": {
+      "types": "./src/cve-followup/repro-github.ts",
+      "default": "./src/cve-followup/repro-github.ts"
+    },
+    "./artifacts/github": {
+      "types": "./src/artifacts/github.ts",
+      "default": "./src/artifacts/github.ts"
+    },
+    "./audits/agent-base": {
+      "types": "./src/audits/agent-base.ts",
+      "default": "./src/audits/agent-base.ts"
+    },
+    "./audits/coordinator-agent": {
+      "types": "./src/audits/coordinator-agent.ts",
+      "default": "./src/audits/coordinator-agent.ts"
+    },
+    "./audits/coordinator-tools": {
+      "types": "./src/audits/coordinator-tools.ts",
+      "default": "./src/audits/coordinator-tools.ts"
+    },
+    "./audits/investigator-agent": {
+      "types": "./src/audits/investigator-agent.ts",
+      "default": "./src/audits/investigator-agent.ts"
+    },
+    "./audits/orchestrator": {
+      "types": "./src/audits/orchestrator.ts",
+      "default": "./src/audits/orchestrator.ts"
+    },
+    "./audits/prompts": {
+      "types": "./src/audits/prompts.ts",
+      "default": "./src/audits/prompts.ts"
+    },
+    "./audits/shards": {
+      "types": "./src/audits/shards.ts",
+      "default": "./src/audits/shards.ts"
+    },
+    "./audits/validator-agent": {
+      "types": "./src/audits/validator-agent.ts",
+      "default": "./src/audits/validator-agent.ts"
+    },
+    "./artifacts/repository": {
+      "types": "./src/artifacts/repository.ts",
+      "default": "./src/artifacts/repository.ts"
+    },
+    "./do/retry": {
+      "types": "./src/do/retry.ts",
+      "default": "./src/do/retry.ts"
+    },
+    "./db/d1-schema": {
+      "types": "./src/db/d1-schema.ts",
+      "default": "./src/db/d1-schema.ts"
+    },
+    "./db/audits": {
+      "types": "./src/db/audits.ts",
+      "default": "./src/db/audits.ts"
+    },
+    "./db/benchmark-runs": {
+      "types": "./src/db/benchmark-runs.ts",
+      "default": "./src/db/benchmark-runs.ts"
+    },
+    "./db/cve-followups": {
+      "types": "./src/db/cve-followups.ts",
+      "default": "./src/db/cve-followups.ts"
+    },
+    "./db/session-index": {
+      "types": "./src/db/session-index.ts",
+      "default": "./src/db/session-index.ts"
+    },
+    "./http/cors": {
+      "types": "./src/http/cors.ts",
+      "default": "./src/http/cors.ts"
+    },
+    "./http/errors": {
+      "types": "./src/http/errors.ts",
+      "default": "./src/http/errors.ts"
+    },
+    "./http/auth": {
+      "types": "./src/http/auth.ts",
+      "default": "./src/http/auth.ts"
+    },
+    "./router": {
+      "types": "./src/router.ts",
+      "default": "./src/router.ts"
+    },
+    "./sandbox/modal": {
+      "types": "./src/sandbox/modal.ts",
+      "default": "./src/sandbox/modal.ts"
+    },
+    "./session/agent": {
+      "types": "./src/session/agent.ts",
+      "default": "./src/session/agent.ts"
+    },
+    "./session/model": {
+      "types": "./src/session/model.ts",
+      "default": "./src/session/model.ts"
+    },
+    "./tools/builtins": {
+      "types": "./src/tools/builtins.ts",
+      "default": "./src/tools/builtins.ts"
+    },
+    "./tools/audit-finding": {
+      "types": "./src/tools/audit-finding.ts",
+      "default": "./src/tools/audit-finding.ts"
+    },
+    "./tools/benchmark-submit": {
+      "types": "./src/tools/benchmark-submit.ts",
+      "default": "./src/tools/benchmark-submit.ts"
+    },
+    "./tools/deepwiki": {
+      "types": "./src/tools/deepwiki.ts",
+      "default": "./src/tools/deepwiki.ts"
+    },
+    "./tools/http": {
+      "types": "./src/tools/http.ts",
+      "default": "./src/tools/http.ts"
+    },
+    "./tools/modal": {
+      "types": "./src/tools/modal.ts",
+      "default": "./src/tools/modal.ts"
+    },
+    "./tools/tiers": {
+      "types": "./src/tools/tiers.ts",
+      "default": "./src/tools/tiers.ts"
+    },
+    "./types": {
+      "types": "./src/types.ts",
+      "default": "./src/types.ts"
+    }
+  },
+  "scripts": {
+    "check-targets": "node --experimental-strip-types src/scripts/ensure-stable-targets.ts --check",
+    "ensure-targets": "node --experimental-strip-types src/scripts/ensure-stable-targets.ts",
+    "fail-stale": "node ./scripts/fail-stale.mjs",
+    "purge-cve-followups": "node ./scripts/purge-cve-followups.mjs",
+    "generate:benchmark-fixtures": "node ./scripts/generate-benchmark-fixtures.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "3.0.71",
+    "@ai-sdk/google": "3.0.64",
+    "@ai-sdk/openai": "3.0.53",
+    "@cloudflare/codemode": "0.3.4",
+    "@cloudflare/shell": "0.3.3",
+    "@cloudflare/think": "0.4.0",
+    "@codebreaker/benchmark-runner": "workspace:*",
+    "@codebreaker/shared": "workspace:*",
+    "@hono/zod-validator": "0.7.6",
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "@octokit/request-error": "7.1.0",
+    "@octokit/rest": "22.0.1",
+    "agents": "0.11.5",
+    "ai": "6.0.168",
+    "ai-gateway-provider": "3.1.3",
+    "drizzle-orm": "0.45.2",
+    "hono": "4.12.15",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20260425.1",
+    "drizzle-kit": "0.31.10",
+    "wrangler": "4.85.0"
+  }
+}

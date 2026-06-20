@@ -1,0 +1,39 @@
+{
+  "task_id": "ecvebench-platform-001",
+  "ghsa_id": "GHSA-ph6g-p72v-pc3p",
+  "codebase": {
+    "repo": "https://github.com/orchidsoftware/platform",
+    "language": "php",
+    "ecosystem": "composer",
+    "commit": "8b8ced1a0ed6db5a01348279b36f79978ed8967e"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Server-side component lifecycle and state persistence layer"
+    },
+    "L2": {
+      "description": "An insecure deserialization vulnerability exists where user-controlled data from an HTTP request parameter is deserialized without proper integrity validation. When an optional encryption setting is disabled (the default configuration), the serialized data can be freely crafted by an attacker, leading to arbitrary object injection and remote code execution."
+    },
+    "L3": {
+      "area": "Screen component state serialization and request-bound state restoration logic",
+      "description": "An insecure deserialization vulnerability exists where a state-carrying HTTP POST parameter is deserialized without integrity validation in the admin panel screen rendering framework. When the optional encryption configuration is not enabled (which is the default), an attacker can craft a malicious serialized payload that is merely base64-decoded before being passed to a deserialization call, achieving remote code execution."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "insecure-deserialization",
+    "cvss": 9.8,
+    "reason": "The extractState method deserializes user-supplied data from the _state request parameter using PHP's unserialize() without proper validation, allowing an attacker to execute arbitrary code via crafted serialized payloads.",
+    "locations": [
+      {
+        "file": "src/Screen/Screen.php",
+        "function": "extractState"
+      },
+      {
+        "file": "src/Screen/Screen.php",
+        "function": "serializableState"
+      }
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "task_id": "ecvebench-framework-001",
+  "ghsa_id": "GHSA-5qjq-69w6-fg57",
+  "codebase": {
+    "repo": "https://github.com/flarum/framework",
+    "language": "typescript",
+    "ecosystem": "composer",
+    "commit": "eeb8fe1443b98f5f622ca52b4a02732f62d1aa77"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Frontend internationalization and content rendering layer"
+    },
+    "L2": {
+      "description": "A cross-site scripting vulnerability exists in the forum software where user-provided string inputs are converted into HTML DOM nodes when rendered in the UI. This allows any user to inject malicious HTML markup through user input fields, which executes in other users' browsers. The attack could be used to perform AJAX requests on behalf of victims, potentially deleting content, modifying settings, or compromising administrator accounts."
+    },
+    "L3": {
+      "area": "Frontend translation system's parameter handling and string rendering subsystem",
+      "description": "A cross-site scripting vulnerability exists in the forum software's translation system where user-provided string parameters undergo a preprocessing step that converts them directly into HTML DOM nodes without escaping. When translation parameters include user-controlled strings such as search queries, these strings are rendered as raw HTML in the browser, allowing any user to inject malicious markup that executes in other users' browsers."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "xss",
+    "cvss": 10.0,
+    "reason": "The translation system's parameter preprocessing returns user-supplied string inputs without sanitization, allowing them to be rendered as HTML DOM nodes. This enables any user to inject arbitrary HTML and JavaScript through input fields like the search box.",
+    "locations": [
+      {
+        "file": "js/src/common/Translator.ts",
+        "function": "preprocessParameters"
+      }
+    ]
+  }
+}

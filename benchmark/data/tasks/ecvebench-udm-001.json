@@ -1,0 +1,39 @@
+{
+  "task_id": "ecvebench-udm-001",
+  "ghsa_id": "GHSA-7g27-v5wj-jr75",
+  "codebase": {
+    "repo": "https://github.com/free5gc/udm",
+    "language": "go",
+    "ecosystem": "go",
+    "commit": "504b14458d156558b3c0ade7107b86b3d5e72998"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Subscriber data management and event notification handling"
+    },
+    "L2": {
+      "description": "A null pointer dereference vulnerability exists where the service fails to validate whether a subscriber context lookup succeeded before using the result. When a crafted HTTP POST request is sent with a malformed URL path, the service attempts to find a user equipment context by subscriber identifier but discards the success indicator from the lookup call. If no matching subscriber exists, the returned nil pointer is dereferenced, causing a runtime panic and complete service crash that requires manual restart."
+    },
+    "L3": {
+      "area": "UDM data change notification callback processing and subscription event handling",
+      "description": "A null pointer dereference vulnerability exists in the UDM data change notification processing path. When a crafted HTTP POST request targets a subscription callback endpoint with a malformed URL path containing path traversal sequences, the service attempts to find a user equipment context by SUPI (Subscription Permanent Identifier) but discards the boolean success indicator from the lookup. If the SUPI does not correspond to an existing subscriber, the returned nil context pointer is dereferenced without validation, causing a runtime panic and complete service crash requiring manual restart."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "null-deref",
+    "cvss": 8.7,
+    "reason": "The DataChangeNotificationProcedure function discards the boolean return value from UdmUeFindBySupi and proceeds to dereference the potentially nil UE context pointer, causing a panic when the lookup fails for a non-existent subscriber.",
+    "locations": [
+      {
+        "file": "internal/sbi/processor/notifier.go",
+        "function": "DataChangeNotificationProcedure"
+      },
+      {
+        "file": "internal/sbi/api_httpcallback.go",
+        "function": "HandleDataChangeNotificationToNF"
+      }
+    ]
+  }
+}

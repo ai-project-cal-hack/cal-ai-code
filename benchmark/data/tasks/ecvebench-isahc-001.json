@@ -1,0 +1,35 @@
+{
+  "task_id": "ecvebench-isahc-001",
+  "ghsa_id": "GHSA-5rrv-m36h-qwf8",
+  "codebase": {
+    "repo": "https://github.com/sagebind/isahc",
+    "language": "rust",
+    "ecosystem": "rust",
+    "commit": "298bf062a27339dd3411c932e5ac2e91a497e43a"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "HTTP client data handling and response processing utilities"
+    },
+    "L2": {
+      "description": "A use-after-free vulnerability exists in a type conversion implementation where a raw memory region is reinterpreted as a new owned allocation, but the original owner of the memory is not prevented from running its destructor. When the original owner is dropped, the backing memory is freed while the new allocation still references it, leading to potential memory corruption or undefined behavior."
+    },
+    "L3": {
+      "area": "HTTP response body buffering and byte-level memory ownership conversion logic",
+      "description": "A use-after-free vulnerability exists in a trait implementation that converts an HTTP response buffer into a byte vector. The conversion uses raw pointer operations to transfer ownership of the underlying memory, but fails to prevent the original buffer's destructor from freeing the memory. This results in the returned vector being backed by freed memory, leading to potential memory corruption or undefined behavior."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "use-after-free",
+    "cvss": 9.8,
+    "reason": "The From<Buffer> for Vec<u8> implementation creates a Vec from raw parts of a slice but does not call mem::forget on the slice, allowing it to be dropped and its memory freed while the Vec still references it.",
+    "locations": [
+      {
+        "file": "src/buffer.rs",
+        "function": "from"
+      }
+    ]
+  }
+}

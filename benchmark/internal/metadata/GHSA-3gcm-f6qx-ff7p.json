@@ -1,0 +1,8 @@
+{
+  "ghsa_id": "GHSA-3gcm-f6qx-ff7p",
+  "post_patch_commit": "4af067a444a579f260d99e8c8eb0ae3d5d9b811a",
+  "noisy_patch": true,
+  "curation_notes": "The vulnerability is in the convertToValidJSONString function which uses Function('return ' + inputString)() to evaluate user-provided MCP server configuration strings. The patch replaces this with JSON5.parse(inputString). The patch is noisy (12 source files changed) because it also replaced JSON.parse with JSON5.parse across 11 other files (ExecuteFlow, HTTP, Iteration, and Requests* tool nodes) that did not contain the same dangerous Function() constructor pattern. No sibling files share the Function() constructor vulnerability. Pre-assigned class command-injection retained as the closest valid class for CWE-94 (code injection via eval-like construct enabling arbitrary command execution).",
+  "dataset_version": "0.1.0",
+  "snapshot_date": "2026-04-26"
+}

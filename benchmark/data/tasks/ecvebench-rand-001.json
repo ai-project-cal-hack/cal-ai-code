@@ -1,0 +1,39 @@
+{
+  "task_id": "ecvebench-rand-001",
+  "ghsa_id": "GHSA-w7j2-35mf-95p7",
+  "codebase": {
+    "repo": "https://github.com/rust-random/rand",
+    "language": "rust",
+    "ecosystem": "rust",
+    "commit": "6ecbe2626b2cc6110a25c97b1702b347574febc7"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Core random number generation primitives and internal data processing routines"
+    },
+    "L2": {
+      "description": "A cryptographic weakness exists in the random number generation library where a buffer length validation is incorrect. This causes an assertion to be overly permissive, allowing a random number generator to potentially be seeded with insufficient entropy, degrading the quality and unpredictability of generated random values."
+    },
+    "L3": {
+      "area": "Byte-to-integer conversion utilities in the core random number generation library",
+      "description": "A cryptographic weakness exists in the random number generation library where buffer length assertions in byte-to-integer conversion routines use the size multiplier on the wrong operand. This causes the checks to be overly permissive, allowing source byte buffers that are too small to pass validation. As a result, random number generators may be seeded with insufficient data, degrading the quality and unpredictability of generated random values."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "crypto-weakness",
+    "cvss": 9.8,
+    "reason": "The read_u32_into and read_u64_into functions have buffer length assertions with the size multiplier on the wrong side, making them too permissive and allowing random number generators to be seeded with insufficient data.",
+    "locations": [
+      {
+        "file": "rand_core/src/le.rs",
+        "function": "read_u32_into"
+      },
+      {
+        "file": "rand_core/src/le.rs",
+        "function": "read_u64_into"
+      }
+    ]
+  }
+}

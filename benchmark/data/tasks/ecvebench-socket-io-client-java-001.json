@@ -1,0 +1,39 @@
+{
+  "task_id": "ecvebench-socket-io-client-java-001",
+  "ghsa_id": "GHSA-85xx-xhjm-rhrw",
+  "codebase": {
+    "repo": "https://github.com/socketio/socket.io-client-java",
+    "language": "java",
+    "ecosystem": "maven",
+    "commit": "4885e7d59fad78285448694cb5681e8a9ce809ef"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Network protocol packet parsing and client-side message processing"
+    },
+    "L2": {
+      "description": "A null pointer dereference vulnerability exists where incoming network packets with an invalid or unexpected payload format are not validated before being processed. A remote attacker can send a crafted packet whose payload does not match the expected data structure for its declared packet type, causing the application to dereference a null or incorrectly-typed value during subsequent processing and crash."
+    },
+    "L3": {
+      "area": "Socket.IO protocol packet decoder and client connection data ingestion layer",
+      "description": "A null pointer dereference vulnerability exists in the Socket.IO protocol implementation where incoming packets with a payload that does not match the expected data structure for the declared packet type are not validated after decoding. A remote attacker can send a crafted Socket.IO packet with a malformed or type-mismatched payload, causing the application to dereference a null or incorrectly-typed value during subsequent processing and crash."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "null-deref",
+    "cvss": 7.5,
+    "reason": "The packet parser does not validate that the decoded payload matches the expected format for the given packet type (e.g., JSONObject for CONNECT, JSONArray for EVENT), allowing crafted packets with invalid payloads to cause null pointer exceptions during subsequent processing.",
+    "locations": [
+      {
+        "file": "src/main/java/io/socket/parser/IOParser.java",
+        "function": "decodeString"
+      },
+      {
+        "file": "src/main/java/io/socket/client/Manager.java",
+        "function": "ondata"
+      }
+    ]
+  }
+}

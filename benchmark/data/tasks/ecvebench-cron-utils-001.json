@@ -1,0 +1,39 @@
+{
+  "task_id": "ecvebench-cron-utils-001",
+  "ghsa_id": "GHSA-p9m8-27x8-rg87",
+  "codebase": {
+    "repo": "https://github.com/jmrozanec/cron-utils",
+    "language": "java",
+    "ecosystem": "maven",
+    "commit": "6f91560a98406c8459a4c7903e10e805fa7c00e4"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Expression processing, error handling, and validation framework integration"
+    },
+    "L2": {
+      "description": "A template injection vulnerability exists where attacker-controlled input is passed unsanitized into a template evaluation context that processes Java Expression Language (EL) expressions. This allows an attacker to inject arbitrary EL payloads, leading to unauthenticated Remote Code Execution (RCE) on the server."
+    },
+    "L3": {
+      "area": "Annotation-based cron expression validation and its integration with the Java Bean Validation constraint framework",
+      "description": "A template injection vulnerability exists where attacker-controlled cron expression input is passed unsanitized into a Bean Validation constraint violation message template that evaluates Java Expression Language (EL) expressions. When cron expressions are validated via the annotation-based validation API, crafted EL payloads in the input can achieve unauthenticated Remote Code Execution (RCE) on the server."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "command-injection",
+    "cvss": 10.0,
+    "reason": "User-controlled cron expression input flows through error messages into a Bean Validation constraint violation message template, which evaluates embedded Java EL expressions, enabling arbitrary remote code execution.",
+    "locations": [
+      {
+        "file": "src/main/java/com/cronutils/validation/CronValidator.java",
+        "function": "isValid"
+      },
+      {
+        "file": "src/main/java/com/cronutils/parser/CronParser.java",
+        "function": "parse"
+      }
+    ]
+  }
+}

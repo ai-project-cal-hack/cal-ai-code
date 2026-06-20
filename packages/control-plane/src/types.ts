@@ -1,0 +1,41 @@
+import type { AuditCoordinatorAgent } from "@codebreaker/control-plane/audits/coordinator-agent";
+import type { AuditInvestigatorAgent } from "@codebreaker/control-plane/audits/investigator-agent";
+import type { AuditValidatorAgent } from "@codebreaker/control-plane/audits/validator-agent";
+import type { SessionAgent } from "@codebreaker/control-plane/session/agent";
+
+export interface Env {
+  ALLOWED_ORIGINS?: string;
+  ANTHROPIC_API_KEY?: string;
+  ANTHROPIC_BASE_URL?: string;
+  AUDIT_COORDINATOR: DurableObjectNamespace<AuditCoordinatorAgent>;
+  AUDIT_INVESTIGATOR: DurableObjectNamespace<AuditInvestigatorAgent>;
+  AUDIT_VALIDATOR: DurableObjectNamespace<AuditValidatorAgent>;
+  CLOUDFLARE_AI_GATEWAY_ACCOUNT_ID?: string;
+  CLOUDFLARE_AI_GATEWAY_ID?: string;
+  CLOUDFLARE_AI_GATEWAY_TOKEN?: string;
+  DB: D1Database;
+  DEVIN_API_KEY?: string;
+  DEVIN_ORG_ID?: string;
+  DEVIN_USER_ID?: string;
+  GEMINI_BASE_URL?: string;
+  GIT_TREE_PROVIDER?: "github" | "cloudflare-artifacts";
+  GITHUB_API_BASE_URL?: string;
+  GITHUB_API_VERSION?: string;
+  GITHUB_GIT_USERNAME?: string;
+  GITHUB_ORG?: string;
+  GITHUB_OWNER?: string;
+  GITHUB_TOKEN?: string;
+  GITHUB_USER_AGENT?: string;
+  GLM_API_KEY?: string;
+  GLM_BASE_URL?: string;
+  GOOGLE_GENERATIVE_AI_API_KEY?: string;
+  JWT_SECRET: string;
+  KIMI_API_KEY?: string;
+  KIMI_BASE_URL?: string;
+  LOADER: WorkerLoader;
+  MODAL_SHIM_SECRET: string;
+  MODAL_SHIM_URL: string;
+  OPENAI_API_KEY?: string;
+  OPENAI_BASE_URL?: string;
+  SESSION_AGENT: DurableObjectNamespace<SessionAgent>;
+}

@@ -1,0 +1,43 @@
+{
+  "task_id": "ecvebench-rusqlite-002",
+  "ghsa_id": "GHSA-28ph-f7gx-fqj8",
+  "codebase": {
+    "repo": "https://github.com/rusqlite/rusqlite",
+    "language": "rust",
+    "ecosystem": "rust",
+    "commit": "e85963852d0320c50686ecf70dbca124c600de4a"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Database extension and module registration infrastructure"
+    },
+    "L2": {
+      "description": "A race condition vulnerability exists in the database extension registration API where module descriptor structures are not required to have sufficient lifetime guarantees. When these descriptors are registered with the underlying C library, the library retains raw pointers to them. If the owning code drops the descriptor while it is still referenced by the C library, concurrent access from another thread leads to use-after-free and memory corruption."
+    },
+    "L3": {
+      "area": "Virtual table module descriptor construction and registration within the database extension layer",
+      "description": "A race condition vulnerability exists in the virtual table module registration API. Functions that construct module descriptors for virtual table implementations return owned values rather than references with sufficient lifetime guarantees. When these descriptors are registered with SQLite's C-level module registration interface, the C library retains raw pointers. If the Rust-side owner drops the descriptor, concurrent SQLite access leads to use-after-free and memory corruption."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "race-condition",
+    "cvss": 9.8,
+    "reason": "The virtual table module registration API accepted non-static references to Module structs, allowing them to be freed while SQLite still held raw pointers to the module's function table, creating a data race leading to potential use-after-free.",
+    "locations": [
+      {
+        "file": "src/vtab/mod.rs",
+        "function": "read_only_module"
+      },
+      {
+        "file": "src/vtab/mod.rs",
+        "function": "eponymous_only_module"
+      },
+      {
+        "file": "src/vtab/mod.rs",
+        "function": "create_module"
+      }
+    ]
+  }
+}

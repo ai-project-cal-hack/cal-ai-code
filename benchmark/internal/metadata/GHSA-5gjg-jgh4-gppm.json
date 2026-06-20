@@ -1,0 +1,8 @@
+{
+  "ghsa_id": "GHSA-5gjg-jgh4-gppm",
+  "post_patch_commit": "5a78f8d5c41ce60dcf9f61aaf47a7a8dc3e0002f",
+  "noisy_patch": false,
+  "curation_notes": "Pre-assigned as null-deref from CWE-476, but reclassified to auth-bypass. CWE-304 (Missing Critical Step in Authentication) is the primary weakness: the socketHandler function never calls options.AuthenticateMethod for WebSocket requests, completely bypassing authentication. The nil pointer dereference on UserData is a secondary consequence, not the root cause. The patch adds the missing authentication call and unauthorized-request handling to socketHandler in websocket.go. Only one source file was modified. Location derived directly from the patch diff.",
+  "dataset_version": "0.1.0",
+  "snapshot_date": "2026-04-26"
+}

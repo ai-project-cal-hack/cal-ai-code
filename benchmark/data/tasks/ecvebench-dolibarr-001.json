@@ -1,0 +1,39 @@
+{
+  "task_id": "ecvebench-dolibarr-001",
+  "ghsa_id": "GHSA-7789-v767-37r5",
+  "codebase": {
+    "repo": "https://github.com/Dolibarr/dolibarr",
+    "language": "php",
+    "ecosystem": "composer",
+    "commit": "3f6b3b51caf0b35842951b2da88232cea36aa193"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Membership and subscription record management"
+    },
+    "L2": {
+      "description": "A SQL injection vulnerability exists where user-supplied HTTP request parameters are directly interpolated into database queries without type enforcement or sanitization, allowing remote unauthenticated attackers to execute arbitrary SQL commands."
+    },
+    "L3": {
+      "area": "Subscription detail and listing pages within the membership management module",
+      "description": "A SQL injection vulnerability exists where HTTP request parameters used as record identifiers and date filters are directly interpolated into SQL query strings without type casting or proper sanitization in the membership subscription management pages, allowing remote unauthenticated attackers to execute arbitrary SQL commands."
+    }
+  },
+  "ground_truth": {
+    "vulnerable": true,
+    "vuln_class": "sql-injection",
+    "cvss": 9.8,
+    "reason": "The rowid parameter in the subscription info page and the date_select parameter in the subscription list page are taken directly from unsanitized GET/POST input and interpolated into SQL queries, allowing remote SQL injection.",
+    "locations": [
+      {
+        "file": "htdocs/adherents/subscription/info.php",
+        "function": null
+      },
+      {
+        "file": "htdocs/adherents/subscription/list.php",
+        "function": null
+      }
+    ]
+  }
+}
