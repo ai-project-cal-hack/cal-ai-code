@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.pnp.cjs
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build output
+dist/
+build/
+out/
+.next/
+.turbo/
+.vite/
+.source/
+*.tsbuildinfo
+next-env.d.ts
+
+# Test & coverage
+coverage/
+.nyc_output/
+
+# Cloudflare Workers / Wrangler
+.wrangler/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# Environment files (keep examples)
+.env
+.env.*
+!.env.example
+.vercel
+
+# Python (modal-shim / docker-shim)
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+*.pem
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
