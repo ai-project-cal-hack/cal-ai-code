@@ -18,6 +18,11 @@ const REF_CHECK_ATTEMPTS = 5;
 const REF_CHECK_DELAY_MS = 1000;
 const FORK_IN_PROGRESS_ATTEMPTS = 30;
 const FORK_IN_PROGRESS_DELAY_MS = 2000;
+// GitHub applies a secondary rate limit to fork creation ("was submitted too
+// quickly"). Retry with exponential backoff so concurrent sweeps don't fail.
+const FORK_RATE_LIMIT_ATTEMPTS = 8;
+const FORK_RATE_LIMIT_BASE_DELAY_MS = 10_000;
+const FORK_RATE_LIMIT_MAX_DELAY_MS = 90_000;
 
 type GitHubRepository =
   RestEndpointMethodTypes["repos"]["get"]["response"]["data"];
@@ -295,6 +300,33 @@ export class GitHubGitTreeStore implements GitTreeStore {
     );
   }
 
+  private isSecondaryRateLimitError(error: unknown): boolean {
+    return this.matchesErrorMessage(error, (value) => {
+      const v = value.toLowerCase();
+      return (
+        v.includes("was submitted too quickly") ||
+        v.includes("secondary rate limit") ||
+        v.includes("exceeded a secondary rate limit")
+      );
+    });
+  }
+
+  private retryAfterMs(error: unknown, fallbackMs: number): number {
+    if (error instanceof RequestError) {
+      const headers = error.response?.headers as
+        | Record<string, string | undefined>
+        | undefined;
+      const retryAfter = headers?.["retry-after"];
+      if (retryAfter) {
+        const seconds = Number.parseInt(retryAfter, 10);
+        if (Number.isFinite(seconds) && seconds > 0) {
+          return Math.min(seconds * 1000, FORK_RATE_LIMIT_MAX_DELAY_MS);
+        }
+      }
+    }
+    return Math.min(fallbackMs, FORK_RATE_LIMIT_MAX_DELAY_MS);
+  }
+
   private async getRepoByNameWithRetry(
     name: string,
     options: { attempts: number; delayMs: number } = {
@@ -314,22 +346,54 @@ export class GitHubGitTreeStore implements GitTreeStore {
     return null;
   }
 
+  private async createForkWithRateLimitRetry(input: {
+    description?: string;
+    newRepoName: string;
+    privateRepo: boolean;
+    upstream: { name: string; owner: string };
+  }): Promise<GitHubRepository> {
+    let lastError: unknown;
+    for (let attempt = 0; attempt < FORK_RATE_LIMIT_ATTEMPTS; attempt += 1) {
+      try {
+        const { data } = await this.octokit.repos.createFork({
+          name: input.newRepoName,
+          owner: input.upstream.owner,
+          private: input.privateRepo,
+          repo: input.upstream.name,
+          ...(this.isOrg ? { organization: this.owner } : {}),
+          ...(input.description ? { description: input.description } : {}),
+        });
+        return data;
+      } catch (error) {
+        if (!this.isSecondaryRateLimitError(error)) {
+          throw error;
+        }
+        lastError = error;
+        if (attempt < FORK_RATE_LIMIT_ATTEMPTS - 1) {
+          const backoff = FORK_RATE_LIMIT_BASE_DELAY_MS * 2 ** attempt;
+          await delay(this.retryAfterMs(error, backoff));
+        }
+      }
+    }
+    throw new Error(
+      `GitHub fork of ${input.upstream.owner}/${input.upstream.name} kept hitting the secondary rate limit after ${FORK_RATE_LIMIT_ATTEMPTS} attempts`,
+      { cause: lastError }
+    );
+  }
+
   private async forkIntoOwner(input: {
     description?: string;
     newRepoName: string;
     privateRepo: boolean;
     upstream: { name: string; owner: string };
   }): Promise<GitHubRepository> {
+    // Note: when forking a public repository, GitHub ignores the `private`
+    // flag and the fork is created public. Such forks also cannot be flipped
+    // to private afterwards ("Public forks can't be made private"). Producing
+    // private targets would require mirror-pushing into a fresh private repo
+    // instead of forking, which we intentionally do not do here.
     try {
-      const { data } = await this.octokit.repos.createFork({
-        name: input.newRepoName,
-        owner: input.upstream.owner,
-        private: input.privateRepo,
-        repo: input.upstream.name,
-        ...(this.isOrg ? { organization: this.owner } : {}),
-        ...(input.description ? { description: input.description } : {}),
-      });
-
+      const data = await this.createForkWithRateLimitRetry(input);
       return data;
     } catch (error) {
       if (this.isRepoNameExistsOnAccountError(error)) {

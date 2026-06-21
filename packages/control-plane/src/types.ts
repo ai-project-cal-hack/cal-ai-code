@@ -13,6 +13,12 @@ export interface Env {
   CLOUDFLARE_AI_GATEWAY_ACCOUNT_ID?: string;
   CLOUDFLARE_AI_GATEWAY_ID?: string;
   CLOUDFLARE_AI_GATEWAY_TOKEN?: string;
+  /**
+   * When set to a truthy value ("1"/"true"), the CVE follow-up pipeline runs the
+   * `review_repro`/`review_fix` security-review stages instead of skipping them.
+   * Defaults to off (the simplified repro+fix-only pipeline).
+   */
+  CVE_FOLLOWUP_REVIEWS?: string;
   DB: D1Database;
   DEVIN_API_KEY?: string;
   DEVIN_ORG_ID?: string;
