@@ -53,7 +53,8 @@ const cloudflareGatewayModelId = (
 const selectCloudflareGatewayModel = (
   config: SessionConfig,
   env: Env,
-  providerName: string
+  providerName: string,
+  providerApiKey?: string
 ): LanguageModel | undefined => {
   const modelId = cloudflareGatewayModelId(
     config.model.provider,
@@ -74,7 +75,12 @@ const selectCloudflareGatewayModel = (
     apiKey,
     gateway: env.CLOUDFLARE_AI_GATEWAY_ID ?? "default",
   });
-  const unified = createUnified({ includeUsage: true });
+  // Forward the provider's own API key through the gateway when available so
+  // upstream auth uses it; otherwise the gateway falls back to stored BYOK keys.
+  const unified = createUnified({
+    includeUsage: true,
+    ...(providerApiKey ? { apiKey: providerApiKey } : {}),
+  });
 
   return gateway(unified(modelId)) as LanguageModel;
 };
@@ -85,7 +91,8 @@ export const selectModel = (config: SessionConfig, env: Env): LanguageModel => {
       const gatewayModel = selectCloudflareGatewayModel(
         config,
         env,
-        "Anthropic"
+        "Anthropic",
+        env.ANTHROPIC_API_KEY
       );
 
       if (gatewayModel) {
@@ -105,7 +112,12 @@ export const selectModel = (config: SessionConfig, env: Env): LanguageModel => {
     }
     case "gemini": {
       const apiKey = env.GOOGLE_GENERATIVE_AI_API_KEY;
-      const gatewayModel = selectCloudflareGatewayModel(config, env, "Gemini");
+      const gatewayModel = selectCloudflareGatewayModel(
+        config,
+        env,
+        "Gemini",
+        apiKey
+      );
 
       if (gatewayModel) {
         return gatewayModel;
@@ -119,7 +131,12 @@ export const selectModel = (config: SessionConfig, env: Env): LanguageModel => {
       })(config.model.id);
     }
     case "glm": {
-      const gatewayModel = selectCloudflareGatewayModel(config, env, "GLM");
+      const gatewayModel = selectCloudflareGatewayModel(
+        config,
+        env,
+        "GLM",
+        env.GLM_API_KEY
+      );
 
       if (gatewayModel) {
         return gatewayModel;
@@ -133,7 +150,12 @@ export const selectModel = (config: SessionConfig, env: Env): LanguageModel => {
       }).chat(config.model.id);
     }
     case "kimi": {
-      const gatewayModel = selectCloudflareGatewayModel(config, env, "Kimi");
+      const gatewayModel = selectCloudflareGatewayModel(
+        config,
+        env,
+        "Kimi",
+        env.KIMI_API_KEY
+      );
 
       if (gatewayModel) {
         return gatewayModel;
@@ -147,7 +169,12 @@ export const selectModel = (config: SessionConfig, env: Env): LanguageModel => {
       }).chat(config.model.id);
     }
     case "openai": {
-      const gatewayModel = selectCloudflareGatewayModel(config, env, "OpenAI");
+      const gatewayModel = selectCloudflareGatewayModel(
+        config,
+        env,
+        "OpenAI",
+        env.OPENAI_API_KEY
+      );
 
       if (gatewayModel) {
         return gatewayModel;

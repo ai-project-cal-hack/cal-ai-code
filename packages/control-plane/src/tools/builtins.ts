@@ -88,6 +88,16 @@ export const activeBuiltinToolNames = (policy: ExtensionPolicy): string[] =>
   activeToolNamesForPolicy(THINK_TOOL_TIERS, policy);
 
 const createExecuteTools = (env: Env, workspace: Workspace): TieredToolSet => {
+  // The local code-execution tool runs generated JS in a Dynamic Worker, which
+  // requires the `worker_loaders` (LOADER) binding. That binding is gated behind
+  // Cloudflare Worker Loaders beta access and is currently disabled in
+  // wrangler.jsonc. Skip registering the tool when LOADER is absent so the rest
+  // of the harness (Modal remote execution, workspace/http/deepwiki tools) can
+  // still run. Re-add the binding to restore this tool once beta access lands.
+  if (!env.LOADER) {
+    return { tiers: {}, tools: {} };
+  }
+
   const workspaceTools = createWorkspaceTools(workspace);
 
   return {
