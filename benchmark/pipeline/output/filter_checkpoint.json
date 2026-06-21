@@ -1,0 +1,12 @@
+{
+  "last_cursor": null,
+  "advisories_seen": 32183,
+  "candidates_written": 13119,
+  "dropped": {
+    "no_reference": 8801,
+    "multi_package": 9383,
+    "no_cvss": 877,
+    "no_english_description": 3
+  },
+  "updated_at": "2026-06-21T06:21:31.489298+00:00"
+}
