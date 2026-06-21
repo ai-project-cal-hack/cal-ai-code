@@ -3,7 +3,7 @@
   "ghsa_id": "GHSA-75p2-hgw4-g7f7",
   "codebase": {
     "repo": "https://github.com/ravibpatel/AutoUpdater.NET",
-    "language": "c#",
+    "language": "csharp",
     "ecosystem": "nuget",
     "commit": "9ef1de7269d801d3916ce868600b5b3721af9656"
   },

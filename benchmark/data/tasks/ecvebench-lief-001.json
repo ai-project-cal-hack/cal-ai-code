@@ -3,7 +3,7 @@
   "ghsa_id": "GHSA-2p5h-hpj4-fxgg",
   "codebase": {
     "repo": "https://github.com/lief-project/LIEF",
-    "language": "cpp",
+    "language": "c++",
     "ecosystem": "pip",
     "commit": "4937a24a0bd6a4eefdc2a10e0bde37445d87c065"
   },

@@ -4,11 +4,12 @@ Scripts for filtering, selecting, and dispatching GitHub Security Advisories to 
 
 ## Overview
 
-The pipeline has three stages:
+The pipeline has four stages:
 
 1. **Filter** — `filter_advisories.py` paginates through all reviewed GHSAs via the GitHub REST API and applies metadata-only filters. No repos are cloned, no diffs are read.
 2. **Select** — `select_candidates.py` maps CWEs to the 13 vulnerability classes, applies a CVSS floor, and performs stratified random sampling for a balanced dispatch list.
 3. **Dispatch** — `dispatch_devin.py` sends each selected candidate to a Devin AI agent with a fully populated prompt. The agent clones the repo, reads the diff, localizes the vulnerability, and opens a PR.
+4. **Monitor** — `monitor_sessions.py` rolls the dispatched sessions up into progress buckets (working, blocked, finished, failed) so you can track a batch to completion. `cleanup_sessions.py` then terminates finished sessions to free concurrency slots.
 
 ## Prerequisites
 
@@ -125,6 +126,26 @@ uv run python -m pipeline.dispatch_devin \
 
 The `--recurate` flag tells agents to skip the duplicate check and overwrite existing files in place, keeping the same task ID.
 
+## Step 4: Monitor sessions
+
+```bash
+uv run python -m pipeline.monitor_sessions
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--tag` | (none) | Only include sessions carrying this tag (AND-combined, repeatable) |
+| `--detail` | off | List individual sessions (id, title, url) per bucket |
+| `--json` | off | Emit machine-readable JSON instead of a human summary |
+| `--watch` | (off) | Refresh in a loop every N seconds (default: 60) |
+
+Rolls all `curation`-tagged sessions into high-level buckets — `working`,
+`blocked` (waiting for user), `suspended`, `finished`, `failed` — and prints a
+progress percentage. Use `--tag XSS` (or a GHSA ID / vuln class added at
+dispatch time) to scope to one batch, and `--watch` to keep an eye on a
+dispatch run until it completes. Once sessions reach `finished`, free up
+concurrency slots with `cleanup_sessions.py`.
+
 ## Directory structure
 
 ```
@@ -134,6 +155,8 @@ pipeline/
 ├── filter_advisories.py       # step 1: filter GHSAs
 ├── select_candidates.py       # step 2: CWE mapping + stratified sampling
 ├── dispatch_devin.py          # step 3: send candidates to Devin agents
+├── monitor_sessions.py        # step 4: report dispatch progress by bucket
+├── cleanup_sessions.py        # utility: terminate finished sessions
 └── lib/
     ├── __init__.py
     ├── cwe_map.py             # CWE → vulnerability class lookup table
