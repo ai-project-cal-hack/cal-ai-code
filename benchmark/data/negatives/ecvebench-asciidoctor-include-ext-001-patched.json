@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-asciidoctor-include-ext-001-patched",
+  "ghsa_id": "GHSA-v222-6mr4-qj29",
+  "codebase": {
+    "repo": "https://github.com/jirutka/asciidoctor-include-ext",
+    "language": "ruby",
+    "ecosystem": "rubygems",
+    "commit": "c7ea001a597c7033575342c51483dab7b87ae155"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Document processing and content inclusion pipeline"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-v222-6mr4-qj29: the command-injection vulnerability was remediated in commit c7ea001a597c7033575342c51483dab7b87ae155. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

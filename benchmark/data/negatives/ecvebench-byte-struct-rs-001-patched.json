@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-byte-struct-rs-001-patched",
+  "ghsa_id": "GHSA-8fgg-5v78-6g76",
+  "codebase": {
+    "repo": "https://github.com/wwylele/byte-struct-rs",
+    "language": "rust",
+    "ecosystem": "rust",
+    "commit": "a535678377de12bc6bc22620c5f59bcc1369f76f"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Byte serialization and deserialization infrastructure for composite data types"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-8fgg-5v78-6g76: the buffer-overflow vulnerability was remediated in commit a535678377de12bc6bc22620c5f59bcc1369f76f. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

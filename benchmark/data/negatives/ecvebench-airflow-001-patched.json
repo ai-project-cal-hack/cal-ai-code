@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-airflow-001-patched",
+  "ghsa_id": "GHSA-6ffj-2wg2-w45j",
+  "codebase": {
+    "repo": "https://github.com/apache/airflow",
+    "language": "python",
+    "ecosystem": "pip",
+    "commit": "01ac969bbb73d07588049715c80827d01f367756"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Data serialization and cross-task communication value handling layer"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-6ffj-2wg2-w45j: the insecure-deserialization vulnerability was remediated in commit 01ac969bbb73d07588049715c80827d01f367756. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

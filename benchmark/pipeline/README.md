@@ -146,6 +146,59 @@ dispatch time) to scope to one batch, and `--watch` to keep an eye on a
 dispatch run until it completes. Once sessions reach `finished`, free up
 concurrency slots with `cleanup_sessions.py`.
 
+## Dataset utilities
+
+These operate on the curated dataset on disk (`benchmark/data`), not the Devin
+API, so they need no credentials.
+
+### Review tasks
+
+```bash
+uv run python -m pipeline.review_tasks --class sql-injection --detail | less
+```
+
+Browse and review tasks from the CLI for a systematic pass over the dataset.
+
+| Flag | Description |
+|------|-------------|
+| `--class` | Filter by vulnerability class (repeatable) |
+| `--language` | Filter by language (repeatable) |
+| `--ecosystem` | Filter by ecosystem (repeatable) |
+| `--search` | Case-insensitive match over task_id, ghsa, repo, reason |
+| `--detail` | Full detail (locations, reason, L1–L3 hints) instead of one line each |
+| `--counts` | Distribution counts for the filtered set instead of a listing |
+| `--json` | Emit JSON (filtered records, or counts with `--counts`) for piping into `jq` |
+| `--include-negatives` | Also include tasks from `data/negatives` |
+| `--limit` | Only show the first N matches |
+
+Examples:
+
+```bash
+uv run python -m pipeline.review_tasks --counts                 # distributions
+uv run python -m pipeline.review_tasks --language rust --class buffer-overflow
+uv run python -m pipeline.review_tasks --search jwt --detail
+uv run python -m pipeline.review_tasks --class xss --json | jq '.[].repo'
+```
+
+### Generate negatives
+
+```bash
+uv run python -m pipeline.generate_negatives --count 10
+```
+
+Generates paired **post-patch negative** tasks (`vulnerable: false`) into
+`data/negatives/`. For each selected positive it pins the repo to the
+`post_patch_commit` from the task's internal metadata — the patched revision
+where the vulnerability no longer exists — and emits area-only hints (L0/L1).
+These measure an agent's false-positive rate. Selection is a deterministic
+round-robin across vulnerability classes so a small pilot stays diverse.
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--count` | 10 | Number of negatives to generate |
+| `--output-dir` | `data/negatives` | Output directory |
+| `--dry-run` | off | Show what would be generated without writing files |
+
 ## Directory structure
 
 ```
@@ -157,6 +210,8 @@ pipeline/
 ├── dispatch_devin.py          # step 3: send candidates to Devin agents
 ├── monitor_sessions.py        # step 4: report dispatch progress by bucket
 ├── cleanup_sessions.py        # utility: terminate finished sessions
+├── review_tasks.py            # utility: browse/review the curated dataset
+├── generate_negatives.py      # utility: build post-patch negative tasks
 └── lib/
     ├── __init__.py
     ├── cwe_map.py             # CWE → vulnerability class lookup table

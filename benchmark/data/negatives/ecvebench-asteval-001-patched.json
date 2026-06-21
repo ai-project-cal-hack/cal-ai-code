@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-asteval-001-patched",
+  "ghsa_id": "GHSA-vp47-9734-prjw",
+  "codebase": {
+    "repo": "https://github.com/lmfit/asteval",
+    "language": "python",
+    "ecosystem": "pip",
+    "commit": "45bb47533f7abb5479618ae7f6a809215700dcb2"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Expression evaluation engine and its runtime safety enforcement layer"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-vp47-9734-prjw: the race-condition vulnerability was remediated in commit 45bb47533f7abb5479618ae7f6a809215700dcb2. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

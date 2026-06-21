@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-babylon-001-patched",
+  "ghsa_id": "GHSA-869w-47c6-fq8q",
+  "codebase": {
+    "repo": "https://github.com/babylonlabs-io/babylon",
+    "language": "go",
+    "ecosystem": "go",
+    "commit": "f0a29d60f206268b56992fa50f38a48077eb4f59"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Application module initialization and token transfer configuration"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-869w-47c6-fq8q: the integer-overflow vulnerability was remediated in commit f0a29d60f206268b56992fa50f38a48077eb4f59. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

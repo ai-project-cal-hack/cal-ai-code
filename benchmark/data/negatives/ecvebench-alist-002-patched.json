@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-alist-002-patched",
+  "ghsa_id": "GHSA-pmg2-rph8-p8r6",
+  "codebase": {
+    "repo": "https://github.com/AlistGo/alist",
+    "language": "go",
+    "ecosystem": "go",
+    "commit": "b5bf5f43253175b55fa2cb511fea601e677d2d83"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "File operation and storage access request handling layer"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-pmg2-rph8-p8r6: the path-traversal vulnerability was remediated in commit b5bf5f43253175b55fa2cb511fea601e677d2d83. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-alist-001-patched",
+  "ghsa_id": "GHSA-8jmm-3xwx-w974",
+  "codebase": {
+    "repo": "https://github.com/AlistGo/alist",
+    "language": "go",
+    "ecosystem": "go",
+    "commit": "69629ca76a8f2c8c973ede3b616f93aa26ff23fb"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Configuration management and external service connectivity"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-8jmm-3xwx-w974: the crypto-weakness vulnerability was remediated in commit 69629ca76a8f2c8c973ede3b616f93aa26ff23fb. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

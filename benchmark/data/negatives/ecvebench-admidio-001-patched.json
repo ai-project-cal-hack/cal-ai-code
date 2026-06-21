@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-admidio-001-patched",
+  "ghsa_id": "GHSA-69wx-xc6j-28v3",
+  "codebase": {
+    "repo": "https://github.com/Admidio/admidio",
+    "language": "php",
+    "ecosystem": "composer",
+    "commit": "3ff02b0c64a6911ab3e81cd61077f392c0b25248"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "User communication and social interaction modules"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-69wx-xc6j-28v3: the sql-injection vulnerability was remediated in commit 3ff02b0c64a6911ab3e81cd61077f392c0b25248. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "task_id": "ecvebench-aubio-001-patched",
+  "ghsa_id": "GHSA-45h5-cqqw-9rjw",
+  "codebase": {
+    "repo": "https://github.com/aubio/aubio",
+    "language": "c",
+    "ecosystem": "pip",
+    "commit": "a81b12a3b4174953b3bc7ef4c37103f4d5636740"
+  },
+  "hints": {
+    "L0": null,
+    "L1": {
+      "area": "Audio source I/O and codec initialization logic"
+    }
+  },
+  "ground_truth": {
+    "vulnerable": false,
+    "vuln_class": null,
+    "cvss": null,
+    "reason": "Patched revision of GHSA-45h5-cqqw-9rjw: the null-deref vulnerability was remediated in commit a81b12a3b4174953b3bc7ef4c37103f4d5636740. The previously vulnerable code paths now apply proper mitigations, so no exploitable flaw remains.",
+    "locations": []
+  }
+}
