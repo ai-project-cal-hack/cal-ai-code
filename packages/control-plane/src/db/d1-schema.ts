@@ -1,4 +1,5 @@
 import {
+  index,
   integer,
   sqliteTable,
   text,
@@ -70,78 +71,104 @@ export const benchmarkRuns = sqliteTable("benchmark_runs", {
   updatedAt: text("updated_at").notNull(),
 });
 
-export const benchmarkRunEvents = sqliteTable("benchmark_run_events", {
-  createdAt: text("created_at").notNull(),
-  details: text("details"),
-  id: text("id").primaryKey(),
-  kind: text("kind").notNull(),
-  message: text("message").notNull(),
-  runId: text("run_id").notNull(),
-});
+export const benchmarkRunEvents = sqliteTable(
+  "benchmark_run_events",
+  {
+    createdAt: text("created_at").notNull(),
+    details: text("details"),
+    id: text("id").primaryKey(),
+    kind: text("kind").notNull(),
+    message: text("message").notNull(),
+    runId: text("run_id").notNull(),
+  },
+  (table) => [index("benchmark_run_events_run_id").on(table.runId)]
+);
 
-export const benchmarkRunResults = sqliteTable("benchmark_run_results", {
-  agentOutput: text("agent_output"),
-  artifactPath: text("artifact_path"),
-  createdAt: text("created_at").notNull(),
-  error: text("error"),
-  id: text("id").primaryKey(),
-  rawOutput: text("raw_output"),
-  runId: text("run_id").notNull(),
-  score: text("score"),
-});
+export const benchmarkRunResults = sqliteTable(
+  "benchmark_run_results",
+  {
+    agentOutput: text("agent_output"),
+    artifactPath: text("artifact_path"),
+    createdAt: text("created_at").notNull(),
+    error: text("error"),
+    id: text("id").primaryKey(),
+    rawOutput: text("raw_output"),
+    runId: text("run_id").notNull(),
+    score: text("score"),
+  },
+  (table) => [index("benchmark_run_results_run_id").on(table.runId)]
+);
 
-export const cveFollowups = sqliteTable("cve_followups", {
-  autoFired: integer("auto_fired").notNull(),
-  cancellationReason: text("cancellation_reason"),
-  completedAt: text("completed_at"),
-  createdAt: text("created_at").notNull(),
-  deepwikiContext: text("deepwiki_context"),
-  ghsaId: text("ghsa_id").notNull(),
-  id: text("id").primaryKey(),
-  runId: text("run_id").notNull(),
-  status: text("status").notNull(),
-  taskId: text("task_id").notNull(),
-  updatedAt: text("updated_at").notNull(),
-});
+export const cveFollowups = sqliteTable(
+  "cve_followups",
+  {
+    autoFired: integer("auto_fired").notNull(),
+    cancellationReason: text("cancellation_reason"),
+    completedAt: text("completed_at"),
+    createdAt: text("created_at").notNull(),
+    deepwikiContext: text("deepwiki_context"),
+    ghsaId: text("ghsa_id").notNull(),
+    id: text("id").primaryKey(),
+    runId: text("run_id").notNull(),
+    status: text("status").notNull(),
+    taskId: text("task_id").notNull(),
+    updatedAt: text("updated_at").notNull(),
+  },
+  (table) => [index("cve_followups_run_id").on(table.runId)]
+);
 
-export const cveFollowupStages = sqliteTable("cve_followup_stages", {
-  attempts: integer("attempts").notNull().default(0),
-  branch: text("branch"),
-  createdAt: text("created_at").notNull(),
-  devinSessionId: text("devin_session_id"),
-  devinUrl: text("devin_url"),
-  followupId: text("followup_id").notNull(),
-  id: text("id").primaryKey(),
-  kind: text("kind").notNull(),
-  lastError: text("last_error"),
-  prUrl: text("pr_url"),
-  status: text("status").notNull(),
-  updatedAt: text("updated_at").notNull(),
-  validationResultId: text("validation_result_id"),
-});
+export const cveFollowupStages = sqliteTable(
+  "cve_followup_stages",
+  {
+    attempts: integer("attempts").notNull().default(0),
+    branch: text("branch"),
+    createdAt: text("created_at").notNull(),
+    devinSessionId: text("devin_session_id"),
+    devinUrl: text("devin_url"),
+    followupId: text("followup_id").notNull(),
+    id: text("id").primaryKey(),
+    kind: text("kind").notNull(),
+    lastError: text("last_error"),
+    prUrl: text("pr_url"),
+    status: text("status").notNull(),
+    updatedAt: text("updated_at").notNull(),
+    validationResultId: text("validation_result_id"),
+  },
+  (table) => [index("cve_followup_stages_followup_id").on(table.followupId)]
+);
 
-export const cveFollowupValidations = sqliteTable("cve_followup_validations", {
-  createdAt: text("created_at").notNull(),
-  exitCode: integer("exit_code"),
-  id: text("id").primaryKey(),
-  manifestJson: text("manifest_json"),
-  markerSeen: integer("marker_seen"),
-  observationalFingerprintMatched: integer("observational_fingerprint_matched"),
-  passed: integer("passed").notNull(),
-  stageId: text("stage_id").notNull(),
-  stderrExcerpt: text("stderr_excerpt"),
-  stdoutExcerpt: text("stdout_excerpt"),
-  tier: text("tier"),
-});
+export const cveFollowupValidations = sqliteTable(
+  "cve_followup_validations",
+  {
+    createdAt: text("created_at").notNull(),
+    exitCode: integer("exit_code"),
+    id: text("id").primaryKey(),
+    manifestJson: text("manifest_json"),
+    markerSeen: integer("marker_seen"),
+    observationalFingerprintMatched: integer(
+      "observational_fingerprint_matched"
+    ),
+    passed: integer("passed").notNull(),
+    stageId: text("stage_id").notNull(),
+    stderrExcerpt: text("stderr_excerpt"),
+    stdoutExcerpt: text("stdout_excerpt"),
+    tier: text("tier"),
+  },
+  (table) => [index("cve_followup_validations_stage_id").on(table.stageId)]
+);
 
-export const cveFollowupEvents = sqliteTable("cve_followup_events", {
-  createdAt: text("created_at").notNull(),
-  details: text("details"),
-  followupId: text("followup_id").notNull(),
-  id: text("id").primaryKey(),
-  kind: text("kind").notNull(),
-  message: text("message").notNull(),
-});
+export const cveFollowupEvents = sqliteTable(
+  "cve_followup_events",
+  {
+    createdAt: text("created_at").notNull(),
+    details: text("details"),
+    followupId: text("followup_id").notNull(),
+    id: text("id").primaryKey(),
+    kind: text("kind").notNull(),
+    message: text("message").notNull(),
+  },
+  (table) => [index("cve_followup_events_followup_id").on(table.followupId)]
+);
 
 export const audits = sqliteTable("audits", {
   cleanupCompletedAt: text("cleanup_completed_at"),
@@ -186,32 +213,43 @@ export const auditShards = sqliteTable(
   ]
 );
 
-export const auditFindings = sqliteTable("audit_findings", {
-  auditId: text("audit_id").notNull(),
-  confidence: integer("confidence").notNull(),
-  createdAt: text("created_at").notNull(),
-  cwe: text("cwe"),
-  description: text("description").notNull(),
-  evidence: text("evidence").notNull(),
-  id: text("id").primaryKey(),
-  locationsJson: text("locations_json").notNull(),
-  pocSketch: text("poc_sketch"),
-  referencesJson: text("references_json").notNull().default("[]"),
-  severity: text("severity").notNull(),
-  shardId: text("shard_id"),
-  status: text("status").notNull(),
-  title: text("title").notNull(),
-  updatedAt: text("updated_at").notNull(),
-  validationNotes: text("validation_notes"),
-  validatorSessionId: text("validator_session_id"),
-  vulnClass: text("vuln_class").notNull(),
-});
+export const auditFindings = sqliteTable(
+  "audit_findings",
+  {
+    auditId: text("audit_id").notNull(),
+    confidence: integer("confidence").notNull(),
+    createdAt: text("created_at").notNull(),
+    cwe: text("cwe"),
+    description: text("description").notNull(),
+    evidence: text("evidence").notNull(),
+    id: text("id").primaryKey(),
+    locationsJson: text("locations_json").notNull(),
+    pocSketch: text("poc_sketch"),
+    referencesJson: text("references_json").notNull().default("[]"),
+    severity: text("severity").notNull(),
+    shardId: text("shard_id"),
+    status: text("status").notNull(),
+    title: text("title").notNull(),
+    updatedAt: text("updated_at").notNull(),
+    validationNotes: text("validation_notes"),
+    validatorSessionId: text("validator_session_id"),
+    vulnClass: text("vuln_class").notNull(),
+  },
+  (table) => [
+    index("audit_findings_audit_id").on(table.auditId),
+    index("audit_findings_shard_id").on(table.shardId),
+  ]
+);
 
-export const auditEvents = sqliteTable("audit_events", {
-  auditId: text("audit_id").notNull(),
-  createdAt: text("created_at").notNull(),
-  details: text("details"),
-  id: text("id").primaryKey(),
-  kind: text("kind").notNull(),
-  message: text("message").notNull(),
-});
+export const auditEvents = sqliteTable(
+  "audit_events",
+  {
+    auditId: text("audit_id").notNull(),
+    createdAt: text("created_at").notNull(),
+    details: text("details"),
+    id: text("id").primaryKey(),
+    kind: text("kind").notNull(),
+    message: text("message").notNull(),
+  },
+  (table) => [index("audit_events_audit_id").on(table.auditId)]
+);
